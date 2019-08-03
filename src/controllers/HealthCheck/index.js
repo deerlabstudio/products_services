@@ -1,5 +1,3 @@
-cons pjson = require('../../../package.json');
-
 class HealthCheckController {
   constructor(router) {
     this.router = router;
