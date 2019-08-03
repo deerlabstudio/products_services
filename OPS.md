@@ -1,4 +1,4 @@
-# Users Services
+# Products Services
 
 ## Properties
 
@@ -7,7 +7,7 @@ After start the project you need to set this environment variables
 | Environment Variables | Default        | Description          				 |
 |-----------------------|----------------|-------------------------------|
 | SERVICE_NAME          | users_services | Port on services run          |
-| APP_PORT              | 9020      		 | Port on services run          |
+| APP_PORT              | 9024      		 | Port on services run          |
 | APP_HOSTNAME          | localhost 		 | Hostname the app use to start |
 | LOGGER_ENABLED        | true      		 | Logs if its is enable         |
 | LOGGER_LEVEL          | info      		 | Logs level to use             |
