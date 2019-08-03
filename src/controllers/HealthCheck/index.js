@@ -1,3 +1,5 @@
+cons pjson = require('../../../package.json');
+
 class HealthCheckController {
   constructor(router) {
     this.router = router;
@@ -7,7 +9,8 @@ class HealthCheckController {
 
   info(req, res) {
     res.json({
-      status: 'UP',
+      name: process.env.SERVICE_NAME || 'produts_services',
+      version: '1.0.0',
     });
   }
 
