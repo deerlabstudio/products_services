@@ -5,6 +5,7 @@ class ProductsController {
   constructor(router) {
     this.router = router;
     this.router.get('/products', this.getAllProducts);
+    this.router.get('/productsByCompany', this.getProductsByCompany);
     this.router.get('/products/:id', this.getOneProducts);
     this.router.post('/products', this.storeProducts);
     this.router.put('/products/:id', this.updateProducts);
@@ -14,6 +15,16 @@ class ProductsController {
   async getAllProducts(req, res, next) {
     try {
       const list = await productsRepository.all();
+      res.json(list);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getProductsByCompany(req, res, next) {
+    try {
+      const { company } = req.query;
+      const list = await productsRepository.byCompany(company);
       res.json(list);
     } catch (error) {
       next(error);

@@ -5,6 +5,11 @@ const all = async () => {
   return list;
 };
 
+const byCompany = async (company) => {
+  const list = await Categories.findAll({ where: { company } });
+  return list;
+};
+
 const one = async (id) => {
   const item = await Categories.findOne({ where: { id } });
   return item;
@@ -15,6 +20,7 @@ const store = async (category) => {
     name: category.name,
     description: category.description,
     status: true,
+    company: category.company,
   });
   return item;
 };
@@ -24,6 +30,7 @@ const update = async (id, category) => {
     name: category.name,
     description: category.description,
     status: category.status,
+    company: category.company,
   }, { where: { id } });
 
   if (item[0] === 1) {
@@ -46,6 +53,7 @@ const destroy = async (id) => {
 
 module.exports = {
   all,
+  byCompany,
   one,
   store,
   update,

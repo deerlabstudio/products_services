@@ -5,6 +5,7 @@ class CategoriesController {
   constructor(router) {
     this.router = router;
     this.router.get('/categories', this.getAllCategories);
+    this.router.get('/categoriesByCompany', this.getCategoriesByCompany);
     this.router.get('/categories/:id', this.getOneCategories);
     this.router.post('/categories', this.storeCategories);
     this.router.put('/categories/:id', this.updateCategories);
@@ -14,6 +15,16 @@ class CategoriesController {
   async getAllCategories(req, res, next) {
     try {
       const list = await categoriesRepository.all();
+      res.json(list);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getCategoriesByCompany(req, res, next) {
+    try {
+      const { company } = req.query;
+      const list = await categoriesRepository.byCompany(company);
       res.json(list);
     } catch (error) {
       next(error);
