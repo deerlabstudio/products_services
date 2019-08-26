@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const { Products, Categories } = require('../database/models');
 
 const all = async () => {
@@ -15,15 +16,30 @@ const one = async (id) => {
   return item;
 };
 
+const findByTextAndCompany = async (company, text) => {
+  const list = await Products.findAll({
+    where: {
+      company,
+      [Op.or]: [
+        { title: { [Op.like]: `%${text}%` } },
+        { description: { [Op.like]: `%${text}%` } },
+        { sku: { [Op.like]: `%${text}%` } },
+        { vendor: { [Op.like]: `%${text}%` } },
+      ],
+    },
+  });
+  return list;
+};
+
 const store = async (product) => {
   const item = await Products.create({
     title: product.title,
     description: product.description,
     vendor: product.vendor,
-    height: product.height,
-    width: product.width,
-    weigth: product.weigth,
-    price: product.price,
+    height: parseFloat(product.height),
+    width: parseFloat(product.width),
+    weigth: parseFloat(product.weigth),
+    price: parseFloat(product.price),
     sku: product.sku,
     status: true,
     categoriesId: product.categoriesId,
@@ -37,10 +53,10 @@ const update = async (id, product) => {
     title: product.title,
     description: product.description,
     vendor: product.vendor,
-    height: product.height,
-    width: product.width,
-    weigth: product.weigth,
-    price: product.price,
+    height: parseFloat(product.height),
+    width: parseFloat(product.width),
+    weigth: parseFloat(product.weigth),
+    price: parseFloat(product.price),
     sku: product.sku,
     status: product.status,
     categoriesId: product.categoriesId,
@@ -68,6 +84,7 @@ const destroy = async (id) => {
 module.exports = {
   all,
   byCompany,
+  findByTextAndCompany,
   one,
   store,
   update,
