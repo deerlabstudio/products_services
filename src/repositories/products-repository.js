@@ -1,5 +1,5 @@
 const { Op } = require('sequelize');
-const { Products, Categories } = require('../database/models');
+const { Products, Categories, Inventory } = require('../database/models');
 
 const all = async () => {
   const list = await Products.findAll();
@@ -27,8 +27,28 @@ const findByTextAndCompany = async (company, text) => {
         { vendor: { [Op.like]: `%${text}%` } },
       ],
     },
+    raw: true,
   });
-  return list;
+
+  const productsIds = list.map(item => item.id);
+  const inventories = await Inventory.findAll({
+    where: {
+      company,
+      product: {
+        [Op.in]: productsIds,
+      },
+    },
+    raw: true,
+  });
+
+  const clonedList = list.map((product) => {
+    const inventory = inventories.find(inv => inv.product === product.id);
+    const stock = inventory ? inventory.stock : 0;
+    const newProduct = Object.assign({}, product, { stock });
+    return newProduct;
+  });
+
+  return clonedList;
 };
 
 const store = async (product) => {
